@@ -31,3 +31,5 @@ D:\Projects\FurnitureCompany\FurnitureCompany\bin\Debug\net6.0-windows\runtimes\
 D:\Projects\FurnitureCompany\FurnitureCompany\bin\Debug\net6.0-windows\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 D:\Projects\FurnitureCompany\FurnitureCompany\obj\Debug\net6.0-windows\FurnitureCompany.csproj.CopyComplete
 D:\Projects\FurnitureCompany\FurnitureCompany\obj\Debug\net6.0-windows\FurnitureCompany.Properties.Resources.resources
+D:\Projects\FurnitureCompany\FurnitureCompany\obj\Debug\net6.0-windows\FurnitureCompany.ManufactureForm.resources
+D:\Projects\FurnitureCompany\FurnitureCompany\obj\Debug\net6.0-windows\FurnitureCompany.LoginForm.resources

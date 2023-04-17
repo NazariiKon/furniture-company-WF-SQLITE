@@ -12,8 +12,9 @@ namespace FurnitureCompany
         List<Product> products;
         List<Category> categories;
         List<Manufacturer> manufacturers;
+        Product selectedProduct = null;
 
-        public Form1()
+        public Form1(string email)
         {
             InitializeComponent();
             categories = new List<Category>();
@@ -94,24 +95,43 @@ namespace FurnitureCompany
                     labelName.Text = product.Name;
                     labelDesc.Text = product.Desc;
                     labelPrice.Text = product.Price.ToString();
-
-                    foreach (var item in manufacturers)
-                    {
-                        if (item.Id == product.ManufacturerId)
-                            labelManufacture.Text = item.Name;
-                    }
+                    selectedProduct = product;
                 }
             }
         }
 
         private void buttonBuy_Click(object sender, EventArgs e)
         {
-
+            // form buy the product
+            BuyProductForm form = new BuyProductForm();
+            form.Show();
         }
 
         private void buttonManufacture_Click(object sender, EventArgs e)
         {
-            // need form to read info about manufacture
+            foreach (Manufacturer manufacturer in manufacturers)
+            {
+                if (selectedProduct.ManufacturerId == manufacturer.Id)
+                {
+                    ManufactureForm manufactureForm = new ManufactureForm(manufacturer);
+                    manufactureForm.Show();
+                }
+            }
+        }
+
+        private void buttonAddProduct_Click(object sender, EventArgs e)
+        {
+            // form add product
+        }
+
+        private void buttonAddCategory_Click(object sender, EventArgs e)
+        {
+            // form add category
+        }
+
+        private void buttonOrders_Click(object sender, EventArgs e)
+        {
+            // form orders
         }
 
         public T CreateObject<T>(SQLiteDataReader reader, params object[] args) where T : new()

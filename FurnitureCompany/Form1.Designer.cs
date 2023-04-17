@@ -35,21 +35,24 @@ namespace FurnitureCompany
             catalogueTreeView = new TreeView();
             label1 = new Label();
             panel1 = new Panel();
+            buttonManufacture = new Button();
             labelPrice = new Label();
             buttonBuy = new Button();
             labelDesc = new Label();
             labelName = new Label();
             pictureBox = new PictureBox();
-            buttonManufacture = new Button();
+            buttonAddCategory = new Button();
+            buttonAddProduct = new Button();
+            buttonOrders = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             SuspendLayout();
             // 
             // catalogueTreeView
             // 
-            catalogueTreeView.Location = new Point(12, 48);
+            catalogueTreeView.Location = new Point(15, 51);
             catalogueTreeView.Name = "catalogueTreeView";
-            catalogueTreeView.Size = new Size(350, 494);
+            catalogueTreeView.Size = new Size(350, 555);
             catalogueTreeView.TabIndex = 0;
             catalogueTreeView.AfterSelect += catalogueTreeView_AfterSelect;
             // 
@@ -72,15 +75,25 @@ namespace FurnitureCompany
             panel1.Controls.Add(labelDesc);
             panel1.Controls.Add(labelName);
             panel1.Controls.Add(pictureBox);
-            panel1.Location = new Point(368, 13);
+            panel1.Location = new Point(368, 51);
             panel1.Name = "panel1";
-            panel1.Size = new Size(402, 529);
+            panel1.Size = new Size(402, 555);
             panel1.TabIndex = 2;
+            // 
+            // buttonManufacture
+            // 
+            buttonManufacture.Location = new Point(3, 466);
+            buttonManufacture.Name = "buttonManufacture";
+            buttonManufacture.Size = new Size(94, 29);
+            buttonManufacture.TabIndex = 7;
+            buttonManufacture.Text = "Виробник";
+            buttonManufacture.UseVisualStyleBackColor = true;
+            buttonManufacture.Click += buttonManufacture_Click;
             // 
             // labelPrice
             // 
             labelPrice.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            labelPrice.Location = new Point(207, 411);
+            labelPrice.Location = new Point(211, 430);
             labelPrice.Name = "labelPrice";
             labelPrice.Size = new Size(188, 68);
             labelPrice.TabIndex = 6;
@@ -92,9 +105,9 @@ namespace FurnitureCompany
             buttonBuy.BackColor = Color.PaleGreen;
             buttonBuy.Font = new Font("Arial Black", 9F, FontStyle.Bold, GraphicsUnit.Point);
             buttonBuy.ForeColor = SystemColors.ControlText;
-            buttonBuy.Location = new Point(3, 482);
+            buttonBuy.Location = new Point(3, 501);
             buttonBuy.Name = "buttonBuy";
-            buttonBuy.Size = new Size(392, 44);
+            buttonBuy.Size = new Size(396, 44);
             buttonBuy.TabIndex = 5;
             buttonBuy.Text = "КУПИТИ";
             buttonBuy.UseVisualStyleBackColor = false;
@@ -103,7 +116,7 @@ namespace FurnitureCompany
             // labelDesc
             // 
             labelDesc.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
-            labelDesc.Location = new Point(7, 327);
+            labelDesc.Location = new Point(3, 343);
             labelDesc.Name = "labelDesc";
             labelDesc.Size = new Size(392, 120);
             labelDesc.TabIndex = 2;
@@ -113,7 +126,7 @@ namespace FurnitureCompany
             // 
             labelName.AutoSize = true;
             labelName.Font = new Font("Segoe UI Semibold", 16.2F, FontStyle.Bold, GraphicsUnit.Point);
-            labelName.Location = new Point(3, 289);
+            labelName.Location = new Point(3, 305);
             labelName.Name = "labelName";
             labelName.Size = new Size(104, 38);
             labelName.TabIndex = 1;
@@ -124,26 +137,49 @@ namespace FurnitureCompany
             pictureBox.Image = Properties.Resources.noimage;
             pictureBox.Location = new Point(3, 3);
             pictureBox.Name = "pictureBox";
-            pictureBox.Size = new Size(396, 283);
+            pictureBox.Size = new Size(396, 299);
             pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox.TabIndex = 0;
             pictureBox.TabStop = false;
             // 
-            // buttonManufacture
+            // buttonAddCategory
             // 
-            buttonManufacture.Location = new Point(7, 450);
-            buttonManufacture.Name = "buttonManufacture";
-            buttonManufacture.Size = new Size(94, 29);
-            buttonManufacture.TabIndex = 7;
-            buttonManufacture.Text = "Виробник";
-            buttonManufacture.UseVisualStyleBackColor = true;
-            buttonManufacture.Click += buttonManufacture_Click;
+            buttonAddCategory.Location = new Point(140, 12);
+            buttonAddCategory.Name = "buttonAddCategory";
+            buttonAddCategory.Size = new Size(225, 36);
+            buttonAddCategory.TabIndex = 3;
+            buttonAddCategory.Text = "Додати категорію";
+            buttonAddCategory.UseVisualStyleBackColor = true;
+            buttonAddCategory.Click += buttonAddCategory_Click;
+            // 
+            // buttonAddProduct
+            // 
+            buttonAddProduct.Location = new Point(30, 564);
+            buttonAddProduct.Name = "buttonAddProduct";
+            buttonAddProduct.Size = new Size(322, 32);
+            buttonAddProduct.TabIndex = 4;
+            buttonAddProduct.Text = "Додати товар";
+            buttonAddProduct.UseVisualStyleBackColor = true;
+            buttonAddProduct.Click += buttonAddProduct_Click;
+            // 
+            // buttonOrders
+            // 
+            buttonOrders.Location = new Point(651, 12);
+            buttonOrders.Name = "buttonOrders";
+            buttonOrders.Size = new Size(119, 36);
+            buttonOrders.TabIndex = 5;
+            buttonOrders.Text = "Корзина";
+            buttonOrders.UseVisualStyleBackColor = true;
+            buttonOrders.Click += buttonOrders_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(782, 553);
+            ClientSize = new Size(782, 616);
+            Controls.Add(buttonOrders);
+            Controls.Add(buttonAddProduct);
+            Controls.Add(buttonAddCategory);
             Controls.Add(panel1);
             Controls.Add(label1);
             Controls.Add(catalogueTreeView);
@@ -167,5 +203,8 @@ namespace FurnitureCompany
         private Label labelPrice;
         private Button buttonBuy;
         private Button buttonManufacture;
+        private Button buttonAddCategory;
+        private Button buttonAddProduct;
+        private Button buttonOrders;
     }
 }

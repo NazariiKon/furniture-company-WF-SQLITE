@@ -1,6 +1,6 @@
 ﻿namespace FurnitureCompany
 {
-    internal class Manufacturer
+    public class Manufacturer
     {
         public Manufacturer()
         {
