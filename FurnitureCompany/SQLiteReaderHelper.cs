@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -10,6 +11,32 @@ namespace FurnitureCompany
 {
     internal class SQLiteReaderHelper
     {
+
+        public static List<T> readObjects<T>(SQLiteDataReader reader, Func<SQLiteDataReader, T> createObject)
+        {
+            var objects = new List<T>();
+            while (reader.Read())
+            {
+                var obj = createObject(reader);
+                objects.Add(obj);
+            }
+            return objects;
+        }
+
+        public static T CreateObject<T>(SQLiteDataReader reader, params object[] args) where T : new()
+        {
+            T obj = new T();
+            Type type = typeof(T);
+            for (int i = 0; i < args.Length; i++)
+            {
+                PropertyInfo prop = type.GetProperty(args[i].ToString());
+                if (prop != null)
+                {
+                    prop.SetValue(obj, reader.GetValue(i));
+                }
+            }
+            return obj;
+        }
         public static SQLiteDataReader Request(string query, params object[] args)
         {
             SQLiteConnection _con = new SQLiteConnection(@"Data Source=furniture.db");

@@ -1,6 +1,6 @@
 ﻿namespace FurnitureCompany
 {
-    internal class Category
+    public class Category
     {
         public Category()
         {

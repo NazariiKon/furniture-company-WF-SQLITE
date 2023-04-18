@@ -24,7 +24,20 @@ namespace FurnitureCompany
                 ("SELECT * FROM client WHERE Email = @param", textBoxEmail.Text);
             if (reader != null)
             {
-                Form1 newForm1 = new Form1(textBoxEmail.Text);
+                Form1 newForm1 = null;
+                while (reader.Read())
+                {
+                    newForm1 = new Form1(SQLiteReaderHelper.CreateObject<Client>(reader,
+                                                "Id",
+                                                "Name",
+                                                "Surname",
+                                                "Login",
+                                                "Password",
+                                                "Email",
+                                                "Adress",
+                                                "Phone"));
+                }
+               
                 newForm1.Show();
                 reader.Close();
             }

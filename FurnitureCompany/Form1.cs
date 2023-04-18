@@ -1,9 +1,14 @@
 using System.Data.SQLite;
 using System.Drawing;
+using System.Net;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Reflection.PortableExecutable;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace FurnitureCompany
 {
@@ -12,12 +17,27 @@ namespace FurnitureCompany
         List<Product> products;
         List<Category> categories;
         List<Manufacturer> manufacturers;
+        List<Worker> workers;
+        List<Client> clients;
+        List<Order> orders = new List<Order>();
         Product selectedProduct = null;
+        Client mainClient = null;
 
-        public Form1(string email)
+        public Form1(Client client)
         {
+            mainClient = client;
             InitializeComponent();
             categories = new List<Category>();
+            orders = readAllOrders();
+            products = readAllProducts();
+            readAllCategories();
+            readAllManufacturers();
+        }
+
+        private void update()
+        {
+            categories = new List<Category>();
+            catalogueTreeView.Nodes.Clear();
             products = readAllProducts();
             readAllCategories();
             readAllManufacturers();
@@ -30,7 +50,7 @@ namespace FurnitureCompany
             SQLiteDataReader reader = SQLiteReaderHelper.Request(query);
             while (reader.Read()) // построчно считываем данные
             {
-                manufacturers.Add(CreateObject<Manufacturer>(reader,
+                manufacturers.Add(SQLiteReaderHelper.CreateObject<Manufacturer>(reader,
                                                 "Id",
                                                 "Name",
                                                 "Adress",
@@ -44,7 +64,7 @@ namespace FurnitureCompany
             SQLiteDataReader reader = SQLiteReaderHelper.Request(query);
             while (reader.Read()) // построчно считываем данные
             {
-                Category category = CreateObject<Category>(reader, "Id", "Name", "Desc");
+                Category category = SQLiteReaderHelper.CreateObject<Category>(reader, "Id", "Name", "Desc");
                 category.Products = new List<Product>();
                 // Создание корневого узла
                 TreeNode rootNode = new TreeNode(category.Name);
@@ -71,7 +91,7 @@ namespace FurnitureCompany
             SQLiteDataReader reader = SQLiteReaderHelper.Request(query);
             while (reader.Read()) // построчно считываем данные
             {
-                products.Add(CreateObject<Product>(reader,
+                products.Add(SQLiteReaderHelper.CreateObject<Product>(reader,
                                                 "Id",
                                                 "Name",
                                                 "Count",
@@ -96,15 +116,84 @@ namespace FurnitureCompany
                     labelDesc.Text = product.Desc;
                     labelPrice.Text = product.Price.ToString();
                     selectedProduct = product;
+
                 }
             }
         }
 
         private void buttonBuy_Click(object sender, EventArgs e)
         {
-            // form buy the product
-            BuyProductForm form = new BuyProductForm();
-            form.Show();
+            Random rnd = new Random();
+            workers = new List<Worker>();
+            clients = new List<Client>();
+            workers = readAllWorkers();
+            clients = readAllClients();
+
+            string query = @"INSERT INTO 'order'
+            (OrderDate, DeliveryDate, Status, ClientId, WorkerId)
+            VALUES (@OrderDate, @DeliveryDate, @Status, @ClientId, @WorkerId);";
+            SQLiteDataReader reader = SQLiteReaderHelper.Request(query, DateTime.Now.ToShortDateString(),
+                DateTime.Now.AddDays(7).ToShortDateString(), "0",
+                mainClient.Id, workers[rnd.Next(0, workers.Count)].Id);
+            orders.Clear();
+            orders = readAllOrders();
+            query = @"INSERT INTO 'order_list'
+            (OrderId, ProductId, Count)
+            VALUES (@OrderId, @ProductId, @Count);";
+            SQLiteReaderHelper.Request(query, orders[orders.Count - 1].Id, selectedProduct.Id, 1);
+            MessageBox.Show("Продукт замовлено!");
+        }
+
+        private List<Order> readAllOrders()
+        {
+            string query = @"SELECT * FROM 'order'";
+            SQLiteDataReader reader = SQLiteReaderHelper.Request(query);
+            while (reader.Read()) // построчно считываем данные
+            {
+                orders.Add(SQLiteReaderHelper.CreateObject<Order>(reader,
+                                                "Id",
+                                                "OrderDate",
+                                                "DeliveryDate",
+                                                "Status",
+                                                "ClientId",
+                                                "WorkerId"));
+            }
+            return orders;
+        }
+
+        private List<Client> readAllClients()
+        {
+            string query = @"SELECT * FROM client";
+            SQLiteDataReader reader = SQLiteReaderHelper.Request(query);
+            while (reader.Read()) // построчно считываем данные
+            {
+                clients.Add(SQLiteReaderHelper.CreateObject<Client>(reader,
+                                                "Id",
+                                                "Name",
+                                                "Surname",
+                                                "Login",
+                                                "Password",
+                                                "Email",
+                                                "Adress",
+                                                "Phone"));
+            }
+            return clients;
+        }
+
+        private List<Worker> readAllWorkers()
+        {
+            string query = @"SELECT * FROM worker";
+            SQLiteDataReader reader = SQLiteReaderHelper.Request(query);
+            while (reader.Read()) // построчно считываем данные
+            {
+                workers.Add(SQLiteReaderHelper.CreateObject<Worker>(reader,
+                                                "Id",
+                                                "Name",
+                                                "Surname",
+                                                "Adress",
+                                                "Phone"));
+            }
+            return workers;
         }
 
         private void buttonManufacture_Click(object sender, EventArgs e)
@@ -121,32 +210,17 @@ namespace FurnitureCompany
 
         private void buttonAddProduct_Click(object sender, EventArgs e)
         {
-            // form add product
-        }
-
-        private void buttonAddCategory_Click(object sender, EventArgs e)
-        {
-            // form add category
+            AddProductForm addProductForm = new AddProductForm(manufacturers, categories);
+            addProductForm.ShowDialog();
+            update();
         }
 
         private void buttonOrders_Click(object sender, EventArgs e)
         {
-            // form orders
-        }
-
-        public T CreateObject<T>(SQLiteDataReader reader, params object[] args) where T : new()
-        {
-            T obj = new T();
-            Type type = typeof(T);
-            for (int i = 0; i < args.Length; i++)
-            {
-                PropertyInfo prop = type.GetProperty(args[i].ToString());
-                if (prop != null)
-                {
-                    prop.SetValue(obj, reader.GetValue(i));
-                }
-            }
-            return obj;
+            orders.Clear();
+            orders = readAllOrders();
+            OrdersForm ordersForm = new OrdersForm(orders, products, mainClient);
+            ordersForm.Show();
         }
     }
 

@@ -41,7 +41,6 @@ namespace FurnitureCompany
             labelDesc = new Label();
             labelName = new Label();
             pictureBox = new PictureBox();
-            buttonAddCategory = new Button();
             buttonAddProduct = new Button();
             buttonOrders = new Button();
             panel1.SuspendLayout();
@@ -142,16 +141,6 @@ namespace FurnitureCompany
             pictureBox.TabIndex = 0;
             pictureBox.TabStop = false;
             // 
-            // buttonAddCategory
-            // 
-            buttonAddCategory.Location = new Point(140, 12);
-            buttonAddCategory.Name = "buttonAddCategory";
-            buttonAddCategory.Size = new Size(225, 36);
-            buttonAddCategory.TabIndex = 3;
-            buttonAddCategory.Text = "Додати категорію";
-            buttonAddCategory.UseVisualStyleBackColor = true;
-            buttonAddCategory.Click += buttonAddCategory_Click;
-            // 
             // buttonAddProduct
             // 
             buttonAddProduct.Location = new Point(30, 564);
@@ -179,7 +168,6 @@ namespace FurnitureCompany
             ClientSize = new Size(782, 616);
             Controls.Add(buttonOrders);
             Controls.Add(buttonAddProduct);
-            Controls.Add(buttonAddCategory);
             Controls.Add(panel1);
             Controls.Add(label1);
             Controls.Add(catalogueTreeView);
@@ -203,7 +191,6 @@ namespace FurnitureCompany
         private Label labelPrice;
         private Button buttonBuy;
         private Button buttonManufacture;
-        private Button buttonAddCategory;
         private Button buttonAddProduct;
         private Button buttonOrders;
     }

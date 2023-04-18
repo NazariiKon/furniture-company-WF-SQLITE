@@ -33,3 +33,6 @@ D:\Projects\FurnitureCompany\FurnitureCompany\obj\Debug\net6.0-windows\Furniture
 D:\Projects\FurnitureCompany\FurnitureCompany\obj\Debug\net6.0-windows\FurnitureCompany.Properties.Resources.resources
 D:\Projects\FurnitureCompany\FurnitureCompany\obj\Debug\net6.0-windows\FurnitureCompany.ManufactureForm.resources
 D:\Projects\FurnitureCompany\FurnitureCompany\obj\Debug\net6.0-windows\FurnitureCompany.LoginForm.resources
+D:\Projects\FurnitureCompany\FurnitureCompany\obj\Debug\net6.0-windows\FurnitureCompany.AddProductForm.resources
+D:\Projects\FurnitureCompany\FurnitureCompany\obj\Debug\net6.0-windows\FurnitureCompany.OrdersForm.resources
+D:\Projects\FurnitureCompany\FurnitureCompany\obj\Debug\net6.0-windows\FurnitureCompany.WorkerForm.resources
